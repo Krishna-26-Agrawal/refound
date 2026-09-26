@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Campus Lost & Found</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .hidden-field { display: none; }
+    </style>
+</head>
+<body class="bg-gray-100 font-sans leading-normal tracking-normal text-gray-800">
+    
+    <!-- Navbar with Google Auth Profile -->
+    <nav class="bg-blue-600 p-4 text-white shadow-md flex justify-between items-center">
+        <div class="container mx-auto">
+            <h1 class="text-2xl font-bold">Campus Lost & Found</h1>
+        </div>
+        <div class="flex items-center gap-4">
+            {% if session.get('user') %}
+                <span class="text-sm font-medium">Hello, {{ session['user']['name'] }}</span>
+                <a href="{{ url_for('logout') }}" class="bg-red-500 hover:bg-red-600 px-3 py-1 rounded text-sm font-semibold transition">Logout</a>
+            {% else %}
+                <a href="{{ url_for('login') }}" class="bg-white text-blue-600 font-semibold px-4 py-2 rounded shadow text-sm">Sign in with Google</a>
+            {% endif %}
+        </div>
+    </nav>
+
+    <div class="container mx-auto my-8 px-4">
+        
+        <!-- Flash Messages -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+          {% if messages %}
+            {% for category, message in messages %}
+              <div class="mb-4 p-4 rounded text-white shadow {{ 'bg-green-500' if category == 'success' else ('bg-blue-500' if category == 'info' else 'bg-red-500') }}">
+                  {{ message }}
+              </div>
+            {% endfor %}
+          {% endif %}
+        {% endwith %}
+
+        <!-- Report Form Section -->
+        <div class="bg-white rounded-lg shadow-md p-6 mb-10">
+            <h2 class="text-xl font-semibold mb-4 border-b pb-2">Report an Item</h2>
+            <form action="{{ url_for('submit') }}" method="POST" enctype="multipart/form-data" class="space-y-4">
+                
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium mb-1">Report Type</label>
+                        <select name="report_type" id="report_type" required class="w-full border rounded p-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            <option value="Lost" {% if form_data.get('report_type') == 'Lost' %}selected{% endif %}>I Lost Something</option>
+                            <option value="Found" {% if form_data.get('report_type') == 'Found' %}selected{% endif %}>I Found Something</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium mb-1">Item Name (Letters only)</label>
+                        <input type="text" name="item_name" value="{{ form_data.get('item_name', '') }}" required pattern="[A-Za-z\s]+" title="Only letters and spaces allowed" placeholder="e.g., iPhone, Calculator" class="w-full border rounded p-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium mb-1">Category</label>
+                        <select name="category" required class="w-full border rounded p-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            <option value="Electronics" {% if form_data.get('category') == 'Electronics' %}selected{% endif %}>Electronics</option>
+                            <option value="Documents/IDs" {% if form_data.get('category') == 'Documents/IDs' %}selected{% endif %}>Documents/IDs</option>
+                            <option value="Keys" {% if form_data.get('category') == 'Keys' %}selected{% endif %}>Keys</option>
+                            <option value="Clothing" {% if form_data.get('category') == 'Clothing' %}selected{% endif %}>Clothing</option>
+                            <option value="Other" {% if form_data.get('category') == 'Other' %}selected{% endif %}>Other</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium mb-1">Location</label>
+                    <input type="text" name="location" value="{{ form_data.get('location', '') }}" required placeholder="Where was it lost/found?" class="w-full border rounded p-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium mb-1">Description</label>
+                    <textarea name="description" required rows="3" placeholder="Extra identifiable marks, color, brand..." class="w-full border rounded p-2 focus:outline-none focus:ring-2 focus:ring-blue-500">{{ form_data.get('description', '') }}</textarea>
+                </div>
+                
+                <div>
+                    <label class="block text-sm font-medium mb-1">Phone Number (Indian 10-digit)</label>
+                    <input type="tel" name="phone_number" value="{{ form_data.get('phone_number', '') }}" pattern="[6-9][0-9]{9}" title="10-digit number starting with 6, 7, 8, or 9" placeholder="e.g. 9876543210" class="w-full border rounded p-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                </div>
+                
+                <div>
+                    <label class="block text-sm font-medium mb-1">Upload Photo (Valid image format)</label>
+                    <input type="file" name="photo" id="photo" accept=".png, .jpg, .jpeg, .gif, image/*" class="w-full border rounded p-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                </div>
+
+                <!-- Found Only Fields -->
+                <div id="found_fields" class="hidden-field bg-blue-50 p-4 rounded border border-blue-200 space-y-4">
+                    <div>
+                        <label class="block text-sm font-medium mb-1 text-blue-800">Who currently has it?</label>
+                        <input type="text" name="who_has_it" id="who_has_it" value="{{ form_data.get('who_has_it', '') }}" placeholder="e.g., Security Gate 2, Library Desk" class="w-full border rounded p-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    </div>
+                </div>
+
+                <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded transition duration-200">
+                    Submit Report
+                </button>
+            </form>
+        </div>
+
+        <!-- Global Category Filter -->
+        <div class="mb-6 flex items-center justify-between bg-white p-4 rounded shadow-sm">
+            <h2 class="text-xl font-bold">Active Listings</h2>
+            <div>
+                <label for="categoryFilter" class="mr-2 font-medium text-sm">Filter Category:</label>
+                <select id="categoryFilter" class="border rounded p-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    <option value="All">All Categories</option>
+                    <option value="Electronics">Electronics</option>
+                    <option value="Documents/IDs">Documents/IDs</option>
+                    <option value="Keys">Keys</option>
+                    <option value="Clothing">Clothing</option>
+                    <option value="Other">Other</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            
+            <!-- Lost Items Section -->
+            <div class="bg-white p-4 rounded-lg shadow-md">
+                <div class="flex justify-between items-center mb-4 border-b-2 border-red-600 pb-2">
+                    <h3 class="text-lg font-bold text-red-600">Lost Items</h3>
+                    <div>
+                        <label class="text-xs font-medium mr-1">Sort:</label>
+                        <select id="sortLost" class="border rounded p-1 text-xs">
+                            <option value="newest">Newest First</option>
+                            <option value="alpha">Alphabetical</option>
+                            <option value="days">Days Passed</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="space-y-4" id="lost-items-container">
+                    {% for item in lost_items %}
+                    <div class="item-card bg-gray-50 rounded-lg shadow-sm border-l-4 border-red-500 p-4" data-category="{{ item.category }}" data-name="{{ item.item_name|lower }}" data-days="{{ item.days_passed }}" data-id="{{ item.id }}">
+                        <div class="flex justify-between items-start mb-2">
+                            <span class="bg-gray-200 text-xs font-semibold px-2 py-1 rounded">{{ item.category }}</span>
+                            <span class="text-xs text-gray-500 font-medium">{{ item.days_passed }} days ago</span>
+                        </div>
+                        
+                        <p class="text-xs text-gray-500 mb-2">👤 Reported by: <span class="font-semibold text-gray-700">{{ item.user_name }}</span></p>
+
+                        {% if item.photo_path %}
+                            <div class="mb-3">
+                                <img src="{{ item.photo_path }}" alt="Item Photo" class="h-32 w-full object-cover rounded cursor-pointer hover:opacity-95 transition" onclick="openModal(this.src)">
+                            </div>
+                        {% endif %}
+                        
+                        <h4 class="font-bold text-lg mb-1">{{ item.item_name }}</h4>
+                        <p class="text-sm font-semibold text-gray-600 mb-1">📍 Location: {{ item.location }}</p>
+                        <p class="text-gray-700 text-sm mb-3">{{ item.description }}</p>
+                        
+                        {% if item.phone_number %}
+                        <p class="text-sm text-gray-600 mb-2">📞 {{ item.phone_number }}</p>
+                        {% endif %}
+
+                        {% if item.action_required %}
+                        <div class="bg-red-100 text-red-800 text-xs font-bold px-2 py-1 rounded mt-2 inline-block">
+                            ⚠️ Unclaimed > 30 Days
+                        </div>
+                        {% endif %}
+
+                        <div class="mt-4 pt-3 border-t">
+                            <form action="{{ url_for('resolve', item_id=item.id) }}" method="POST" class="flex gap-2">
+                                <button type="submit" name="action" value="resolve" class="text-xs bg-green-100 hover:bg-green-200 text-green-800 py-1 px-3 rounded font-semibold transition">Mark Resolved</button>
+                                <button type="submit" name="action" value="delete" class="text-xs bg-gray-100 hover:bg-gray-200 text-gray-800 py-1 px-3 rounded font-semibold transition" onclick="return confirm('Are you sure you want to delete this listing?')">Delete</button>
+                            </form>
+                        </div>
+                    </div>
+                    {% else %}
+                    <p class="text-gray-500 italic text-sm">No active lost items reported.</p>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <!-- Found Items Section -->
+            <div class="bg-white p-4 rounded-lg shadow-md">
+                <div class="flex justify-between items-center mb-4 border-b-2 border-green-600 pb-2">
+                    <h3 class="text-lg font-bold text-green-600">Found Items</h3>
+                    <div>
+                        <label class="text-xs font-medium mr-1">Sort:</label>
+                        <select id="sortFound" class="border rounded p-1 text-xs">
+                            <option value="newest">Newest First</option>
+                            <option value="alpha">Alphabetical</option>
+                            <option value="days">Days Passed</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="space-y-4" id="found-items-container">
+                    {% for item in found_items %}
+                    <div class="item-card bg-gray-50 rounded-lg shadow-sm border-l-4 border-green-500 p-4" data-category="{{ item.category }}" data-name="{{ item.item_name|lower }}" data-days="{{ item.days_passed }}" data-id="{{ item.id }}">
+                        <div class="flex justify-between items-start mb-2">
+                            <span class="bg-gray-200 text-xs font-semibold px-2 py-1 rounded">{{ item.category }}</span>
+                            <span class="text-xs text-gray-500 font-medium">{{ item.days_passed }} days ago</span>
+                        </div>
+
+                        <p class="text-xs text-gray-500 mb-2">👤 Reported by: <span class="font-semibold text-gray-700">{{ item.user_name }}</span></p>
+
+                        {% if item.photo_path %}
+                        <div class="mb-3">
+                            <img src="{{ item.photo_path }}" alt="Item Photo" class="h-32 w-full object-cover rounded cursor-pointer hover:opacity-95 transition" onclick="openModal(this.src)">
+                        </div>
+                        {% endif %}
+                        
+                        <h4 class="font-bold text-lg mb-1">{{ item.item_name }}</h4>
+                        <p class="text-sm font-semibold text-gray-600 mb-1">📍 Location: {{ item.location }}</p>
+                        <p class="text-gray-700 text-sm mb-3">{{ item.description }}</p>
+                        
+                        <div class="bg-green-50 p-2 rounded text-sm text-green-900 mb-3 font-medium">
+                            📍 <strong>Currently with:</strong> {{ item.who_has_it }}
+                        </div>
+
+                        {% if item.phone_number %}
+                        <p class="text-sm text-gray-600 mb-2">📞 {{ item.phone_number }}</p>
+                        {% endif %}
+
+                        {% if item.action_required %}
+                        <div class="bg-red-100 text-red-800 text-xs font-bold px-2 py-1 rounded mt-2 inline-block">
+                            ⚠️ Unclaimed > 30 Days
+                        </div>
+                        {% endif %}
+
+                        <div class="mt-4 pt-3 border-t">
+                            <form action="{{ url_for('resolve', item_id=item.id) }}" method="POST" class="flex gap-2">
+                                <button type="submit" name="action" value="resolve" class="text-xs bg-green-100 hover:bg-green-200 text-green-800 py-1 px-3 rounded font-semibold transition">Claimed/Resolved</button>
+                                <button type="submit" name="action" value="delete" class="text-xs bg-gray-100 hover:bg-gray-200 text-gray-800 py-1 px-3 rounded font-semibold transition" onclick="return confirm('Are you sure you want to delete this listing?')">Delete</button>
+                            </form>
+                        </div>
+                    </div>
+                    {% else %}
+                    <p class="text-gray-500 italic text-sm">No active found items reported.</p>
+                    {% endfor %}
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Image Lightbox Modal -->
+    <div id="imageModal" class="fixed inset-0 bg-black bg-opacity-75 hidden items-center justify-center z-50 p-4" onclick="closeModal()">
+        <div class="relative max-w-3xl max-h-full">
+            <img id="modalImg" class="max-h-[85vh] max-w-full rounded shadow-lg object-contain">
+            <button class="absolute top-2 right-2 text-white bg-black bg-opacity-50 rounded-full p-2 hover:bg-opacity-80 text-xl font-bold leading-none">&times;</button>
+        </div>
+    </div>
+
+    <script>
+        // Image Modal functions
+        function openModal(src) {
+            document.getElementById('modalImg').src = src;
+            document.getElementById('imageModal').classList.remove('hidden');
+            document.getElementById('imageModal').classList.add('flex');
+        }
+        function closeModal() {
+            document.getElementById('imageModal').classList.remove('flex');
+            document.getElementById('imageModal').classList.add('hidden');
+        }
+
+        // Form Toggling Logic
+        const reportTypeSelect = document.getElementById('report_type');
+        const foundFields = document.getElementById('found_fields');
+        const locationInput = document.querySelector('input[name="location"]');
+        const descriptionInput = document.querySelector('textarea[name="description"]');
+        const phoneInput = document.querySelector('input[name="phone_number"]');
+
+        function toggleFoundFields() {
+            if (reportTypeSelect.value === 'Found') {
+                foundFields.classList.remove('hidden-field');
+                document.getElementById('who_has_it').required = true;
+                locationInput.required = true;
+                descriptionInput.required = false;
+                phoneInput.required = false;
+            } else {
+                foundFields.classList.add('hidden-field');
+                document.getElementById('who_has_it').required = false;
+                locationInput.required = true;
+                descriptionInput.required = true;
+                phoneInput.required = true;
+            }
+        }
+        reportTypeSelect.addEventListener('change', toggleFoundFields);
+        toggleFoundFields();
+
+        // Filtering & Sorting Logic
+        const categoryFilter = document.getElementById('categoryFilter');
+        
+        function applyFilterAndSort(containerId, sortValue) {
+            const container = document.getElementById(containerId);
+            const cards = Array.from(container.getElementsByClassName('item-card'));
+            const selectedCategory = categoryFilter.value;
+
+            // Sort cards
+            cards.sort((a, b) => {
+                if (sortValue === 'alpha') {
+                    return a.getAttribute('data-name').localeCompare(b.getAttribute('data-name'));
+                } else if (sortValue === 'days') {
+                    return parseInt(b.getAttribute('data-days')) - parseInt(a.getAttribute('data-days'));
+                } else {
+                    return parseInt(b.getAttribute('data-id')) - parseInt(a.getAttribute('data-id')); // newest
+                }
+            });
+
+            // Re-append cards in sorted order and apply category filter
+            cards.forEach(card => {
+                container.appendChild(card);
+                const cardCat = card.getAttribute('data-category');
+                if (selectedCategory === 'All' || cardCat === selectedCategory) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+
+        document.getElementById('sortLost').addEventListener('change', (e) => applyFilterAndSort('lost-items-container', e.target.value));
+        document.getElementById('sortFound').addEventListener('change', (e) => applyFilterAndSort('found-items-container', e.target.value));
+        categoryFilter.addEventListener('change', () => {
+            applyFilterAndSort('lost-items-container', document.getElementById('sortLost').value);
+            applyFilterAndSort('found-items-container', document.getElementById('sortFound').value);
+        });
+    </script>
+</body>
+</html>

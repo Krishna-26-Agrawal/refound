@@ -1,0 +1,6 @@
+venv/
+__pycache__/
+*.pyc
+.env
+lost_and_found.db
+.DS_Store
