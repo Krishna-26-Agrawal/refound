@@ -25,6 +25,10 @@
 </div>
 <div class="flex items-center gap-space-md">
 {% if session.get('user') %}
+<a class="hidden sm:inline-flex items-center gap-1.5 px-space-md py-2 rounded-lg border border-outline-variant bg-surface hover:bg-surface-container text-on-surface font-label-md transition-colors" href="{{ url_for('feedback') }}">
+<span class="material-symbols-outlined text-[18px]">forum</span>
+Feedback
+</a>
 <span class="font-label-md text-on-surface">Hi, {{ session['user']['name'] }}</span>
 <a class="inline-flex items-center px-space-md py-2 rounded-lg border border-outline-variant bg-surface hover:bg-surface-container text-on-surface font-label-md transition-colors" href="{{ url_for('logout') }}">Logout</a>
 {% else %}

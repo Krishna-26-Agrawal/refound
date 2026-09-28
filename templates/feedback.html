@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<meta content="web_standard" name="shell-type"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+tailwind.config = {
+  darkMode: "class",
+  theme: {
+    extend: {
+      colors: {
+        primary: "#3525cd",
+        "primary-container": "#4f46e5",
+        secondary: "#006c49",
+        "secondary-container": "#6cf8bb",
+        surface: "#fbf8ff",
+        "surface-container-low": "#f4f2fd",
+        "surface-container": "#eeedf7",
+        "surface-container-high": "#e8e7f1",
+        "surface-container-highest": "#e3e1ec",
+        "surface-container-lowest": "#ffffff",
+        "on-surface": "#1a1b22",
+        "on-surface-variant": "#464555",
+        outline: "#777587",
+        "outline-variant": "#c7c4d8",
+        error: "#ba1a1a",
+        "error-container": "#ffdad6",
+        "on-error-container": "#93000a"
+      },
+      fontFamily: {
+        display: ["Plus Jakarta Sans"],
+        body: ["Inter"]
+      }
+    }
+  }
+};
+</script>
+<style>
+body { overscroll-behavior: none; }
+::-webkit-scrollbar { display:none; }
+</style>
+</head>
+
+<body class="bg-surface text-on-surface font-body antialiased min-h-screen flex flex-col">
+
+<header class="fixed top-0 left-0 w-full z-50 bg-surface/90 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.04)]">
+  <div class="h-20 w-full flex items-center justify-between px-4 md:px-8 border-b border-outline-variant/30 max-w-7xl mx-auto">
+    <div class="flex items-center gap-4">
+      <a class="font-display text-2xl text-primary tracking-tight font-bold" href="{{ url_for('index') }}">ReFound</a>
+      <span class="hidden sm:block text-outline">/</span>
+      <span class="hidden sm:block font-medium text-on-surface">Feedback</span>
+    </div>
+    <div class="flex items-center gap-2">
+      <a class="inline-flex items-center gap-1.5 px-3 py-2 rounded-lg border border-outline-variant bg-surface hover:bg-surface-container transition-colors" href="{{ url_for('index') }}">
+        <span class="material-symbols-outlined text-[18px]">home</span>
+        <span class="hidden sm:inline">Back to ReFound</span>
+      </a>
+      <span class="hidden md:inline text-sm text-on-surface-variant">Hi, {{ session['user']['name'] }}</span>
+      <a class="inline-flex items-center px-3 py-2 rounded-lg bg-primary hover:bg-primary-container text-white transition-colors" href="{{ url_for('logout') }}">Logout</a>
+    </div>
+  </div>
+</header>
+
+<main class="w-full pt-28 pb-12 flex-grow">
+  {% with messages = get_flashed_messages(with_categories=true) %}
+  {% if messages %}
+  <div class="max-w-5xl mx-auto px-4 md:px-8 mb-5">
+    {% for category, message in messages %}
+    <div class="p-4 rounded-xl shadow-sm text-center {% if category == 'error' %}bg-error-container text-on-error-container{% else %}bg-secondary-container text-secondary{% endif %}">
+      {{ message }}
+    </div>
+    {% endfor %}
+  </div>
+  {% endif %}
+  {% endwith %}
+
+  <section class="max-w-5xl mx-auto px-4 md:px-8">
+    <div class="text-center max-w-2xl mx-auto">
+      <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-surface-container-high text-on-surface text-sm font-semibold">
+        <span class="material-symbols-outlined text-secondary text-[18px]">forum</span>
+        Community Feedback
+      </span>
+      <h1 class="font-display text-4xl md:text-5xl font-extrabold tracking-tight mt-4">
+        Help make ReFound better.
+      </h1>
+      <p class="text-on-surface-variant mt-3 text-base md:text-lg">
+        Share a bug, suggest an improvement, tell us what worked, or simply tell us what you think.
+      </p>
+    </div>
+
+    <!-- Summary -->
+    <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4 mt-8">
+      <div class="bg-surface-container-lowest border border-outline-variant/20 rounded-xl p-4 shadow-sm">
+        <div class="flex items-center gap-2 text-primary">
+          <span class="material-symbols-outlined">forum</span>
+          <span class="text-sm font-semibold">All feedback</span>
+        </div>
+        <p class="font-display text-3xl font-bold mt-3">{{ total_feedback }}</p>
+      </div>
+      <div class="bg-surface-container-lowest border border-outline-variant/20 rounded-xl p-4 shadow-sm">
+        <div class="flex items-center gap-2 text-error">
+          <span class="material-symbols-outlined">bug_report</span>
+          <span class="text-sm font-semibold">Problems</span>
+        </div>
+        <p class="font-display text-3xl font-bold mt-3">{{ bug_count }}</p>
+      </div>
+      <div class="bg-surface-container-lowest border border-outline-variant/20 rounded-xl p-4 shadow-sm">
+        <div class="flex items-center gap-2 text-primary">
+          <span class="material-symbols-outlined">lightbulb</span>
+          <span class="text-sm font-semibold">Ideas</span>
+        </div>
+        <p class="font-display text-3xl font-bold mt-3">{{ feature_count }}</p>
+      </div>
+      <div class="bg-surface-container-lowest border border-outline-variant/20 rounded-xl p-4 shadow-sm">
+        <div class="flex items-center gap-2 text-secondary">
+          <span class="material-symbols-outlined">favorite</span>
+          <span class="text-sm font-semibold">Success stories</span>
+        </div>
+        <p class="font-display text-3xl font-bold mt-3">{{ success_count }}</p>
+      </div>
+    </div>
+
+    <div class="grid lg:grid-cols-[380px_1fr] gap-6 mt-8 items-start">
+      <!-- Feedback form -->
+      <section class="bg-surface-container-low rounded-2xl border border-outline-variant/30 p-5 md:p-6 lg:sticky lg:top-24">
+        <div class="flex items-start gap-3">
+          <div class="p-2 rounded-lg bg-primary/10 text-primary">
+            <span class="material-symbols-outlined">edit_note</span>
+          </div>
+          <div>
+            <h2 class="font-display text-xl font-bold">Leave feedback</h2>
+            <p class="text-sm text-on-surface-variant mt-1">Your name is shown with your feedback so the community knows it comes from a real campus user.</p>
+          </div>
+        </div>
+
+        <form action="{{ url_for('feedback') }}" method="POST" class="mt-6 space-y-4">
+          <div>
+            <label class="block text-sm font-semibold mb-1.5">Category</label>
+            <select name="category" required class="w-full p-3 rounded-lg bg-surface border border-outline-variant outline-none focus:border-primary">
+              <option value="">Choose a category</option>
+              <option>General</option>
+              <option>Bug / Problem</option>
+              <option>Feature Request</option>
+              <option>UI / UX</option>
+              <option>Success Story</option>
+            </select>
+          </div>
+
+          <div>
+            <label class="block text-sm font-semibold mb-1.5">How would you rate ReFound?</label>
+            <div class="grid grid-cols-5 gap-2">
+              {% for value in range(1, 6) %}
+              <label class="cursor-pointer">
+                <input class="peer sr-only" type="radio" name="rating" value="{{ value }}"/>
+                <span class="h-10 rounded-lg border border-outline-variant bg-surface flex items-center justify-center text-sm font-semibold peer-checked:bg-primary peer-checked:text-white peer-checked:border-primary transition-colors">{{ value }}</span>
+              </label>
+              {% endfor %}
+            </div>
+            <p class="text-xs text-outline mt-1.5">Optional · 1 = needs work, 5 = excellent</p>
+          </div>
+
+          <div>
+            <label class="block text-sm font-semibold mb-1.5">Title</label>
+            <input name="title" maxlength="120" required placeholder="e.g. Found my missing ID!" class="w-full p-3 rounded-lg bg-surface border border-outline-variant outline-none focus:border-primary"/>
+          </div>
+
+          <div>
+            <label class="block text-sm font-semibold mb-1.5">Your feedback</label>
+            <textarea name="message" maxlength="2000" required rows="6" placeholder="Tell us what happened, what could be better, or what you would like to see next..." class="w-full p-3 rounded-lg bg-surface border border-outline-variant outline-none focus:border-primary resize-y"></textarea>
+            <div class="text-right text-xs text-outline mt-1"><span id="charCount">0</span>/2000</div>
+          </div>
+
+          <button class="w-full py-3 rounded-lg bg-primary hover:bg-primary-container text-white font-semibold shadow-sm transition-all" type="submit">
+            Submit feedback
+          </button>
+        </form>
+      </section>
+
+      <!-- Feedback board -->
+      <section>
+        <div class="bg-surface-container-lowest border border-outline-variant/20 rounded-2xl shadow-sm p-4 md:p-5">
+          <div class="flex flex-col md:flex-row md:items-center justify-between gap-3">
+            <div>
+              <h2 class="font-display text-xl font-bold">What the community is saying</h2>
+              <p class="text-sm text-on-surface-variant mt-1">Browse feedback and ideas from ReFound users.</p>
+            </div>
+            {% if avg_rating %}
+            <div class="flex items-center gap-2 px-3 py-2 rounded-lg bg-surface-container-low">
+              <span class="material-symbols-outlined text-tertiary">star</span>
+              <span class="font-bold">{{ avg_rating }}/5</span>
+              <span class="text-sm text-on-surface-variant">average rating</span>
+            </div>
+            {% endif %}
+          </div>
+
+          <form method="GET" action="{{ url_for('feedback') }}" class="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-5">
+            <div>
+              <label class="text-xs font-semibold text-on-surface-variant">Category</label>
+              <select name="category" onchange="this.form.submit()" class="w-full mt-1 p-2.5 rounded-lg bg-surface border border-outline-variant outline-none focus:border-primary">
+                <option value="All" {% if selected_category == 'All' %}selected{% endif %}>All categories</option>
+                <option value="General" {% if selected_category == 'General' %}selected{% endif %}>General</option>
+                <option value="Bug / Problem" {% if selected_category == 'Bug / Problem' %}selected{% endif %}>Bug / Problem</option>
+                <option value="Feature Request" {% if selected_category == 'Feature Request' %}selected{% endif %}>Feature Request</option>
+                <option value="UI / UX" {% if selected_category == 'UI / UX' %}selected{% endif %}>UI / UX</option>
+                <option value="Success Story" {% if selected_category == 'Success Story' %}selected{% endif %}>Success Story</option>
+              </select>
+            </div>
+            <div>
+              <label class="text-xs font-semibold text-on-surface-variant">Sort by</label>
+              <select name="sort" onchange="this.form.submit()" class="w-full mt-1 p-2.5 rounded-lg bg-surface border border-outline-variant outline-none focus:border-primary">
+                <option value="newest" {% if selected_sort == 'newest' %}selected{% endif %}>Newest first</option>
+                <option value="oldest" {% if selected_sort == 'oldest' %}selected{% endif %}>Oldest first</option>
+                <option value="highest" {% if selected_sort == 'highest' %}selected{% endif %}>Highest rated</option>
+                <option value="lowest" {% if selected_sort == 'lowest' %}selected{% endif %}>Lowest rated</option>
+              </select>
+            </div>
+          </form>
+
+          <div class="space-y-3 mt-5">
+            {% for feedback in feedback_items %}
+            <article class="border border-outline-variant/30 rounded-xl p-4 md:p-5 hover:border-primary/30 transition-colors">
+              <div class="flex flex-wrap items-center justify-between gap-2">
+                <div class="flex flex-wrap items-center gap-2">
+                  {% set category_styles = {
+                    'Bug / Problem': 'bg-error-container text-on-error-container',
+                    'Feature Request': 'bg-primary/10 text-primary',
+                    'UI / UX': 'bg-surface-container-high text-on-surface',
+                    'Success Story': 'bg-secondary-container text-secondary',
+                    'General': 'bg-surface-container text-on-surface-variant'
+                  } %}
+                  <span class="px-2.5 py-1 rounded-full text-xs font-bold {{ category_styles.get(feedback.category, 'bg-surface-container text-on-surface') }}">
+                    {{ feedback.category }}
+                  </span>
+                  {% if feedback.rating %}
+                  <span class="flex items-center gap-0.5 text-sm font-semibold">
+                    {% for star in range(1, 6) %}
+                      <span class="material-symbols-outlined text-[17px] {% if star <= feedback.rating %}text-tertiary{% else %}text-outline-variant{% endif %}">star</span>
+                    {% endfor %}
+                  </span>
+                  {% endif %}
+                </div>
+                <span class="text-xs text-outline">
+                  {{ feedback.created_at.strftime('%d %b %Y') if feedback.created_at else '' }}
+                </span>
+              </div>
+
+              <h3 class="font-display text-lg font-bold mt-3">{{ feedback.title }}</h3>
+              <p class="text-sm md:text-base text-on-surface-variant mt-1.5 whitespace-pre-line break-words">{{ feedback.message }}</p>
+
+              <div class="flex items-center gap-2 mt-4 pt-3 border-t border-outline-variant/20 text-xs text-outline">
+                <span class="material-symbols-outlined text-[16px]">person</span>
+                <span>{{ feedback.user_name }}</span>
+                {% if feedback.status %}
+                <span>•</span>
+                <span>{{ feedback.status }}</span>
+                {% endif %}
+              </div>
+            </article>
+            {% else %}
+            <div class="py-12 text-center rounded-xl bg-surface-container-low">
+              <span class="material-symbols-outlined text-4xl text-outline">forum</span>
+              <h3 class="font-display text-lg font-bold mt-3">No feedback here yet</h3>
+              <p class="text-sm text-on-surface-variant mt-1">Be the first person to share something with the community.</p>
+            </div>
+            {% endfor %}
+          </div>
+        </div>
+      </section>
+    </div>
+  </section>
+</main>
+
+<footer class="w-full bg-surface-container-low text-on-surface-variant py-6 mt-auto">
+  <div class="w-full px-4 md:px-8 max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-3 text-center md:text-left">
+    <span class="font-display text-xl text-primary tracking-tight font-bold">ReFound</span>
+    <p>Developed with ❤️ by Krishna Agrawal</p>
+  </div>
+</footer>
+
+<script>
+const messageBox = document.querySelector('textarea[name="message"]');
+const charCount = document.getElementById('charCount');
+if (messageBox && charCount) {
+  const updateCount = () => charCount.textContent = messageBox.value.length;
+  messageBox.addEventListener('input', updateCount);
+  updateCount();
+}
+</script>
+</body>
+</html>

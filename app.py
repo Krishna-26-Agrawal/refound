@@ -73,6 +73,20 @@ def init_db():
             status TEXT DEFAULT 'Active'
         )
     ''')
+
+    cursor.execute('''
+        CREATE TABLE IF NOT EXISTS feedback (
+            id SERIAL PRIMARY KEY,
+            user_email TEXT NOT NULL,
+            user_name TEXT NOT NULL,
+            category TEXT NOT NULL,
+            rating INTEGER,
+            title TEXT NOT NULL,
+            message TEXT NOT NULL,
+            status TEXT DEFAULT 'Open',
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        )
+    ''')
     conn.commit()
     cursor.close()
     conn.close()
@@ -180,6 +194,130 @@ def index():
         total_reunited=total_reunited,
         median_speed=median_speed
     )
+
+@app.route('/feedback', methods=['GET', 'POST'])
+def feedback():
+    if 'user' not in session:
+        return redirect(url_for('landing'))
+
+    allowed_categories = {
+        'General',
+        'Bug / Problem',
+        'Feature Request',
+        'UI / UX',
+        'Success Story'
+    }
+
+    if request.method == 'POST':
+        category = request.form.get('category', '').strip()
+        title = escape(request.form.get('title', '').strip())
+        message = escape(request.form.get('message', '').strip())
+        rating_raw = request.form.get('rating', '').strip()
+
+        rating = None
+        if rating_raw:
+            try:
+                rating = int(rating_raw)
+            except ValueError:
+                rating = None
+
+        if category not in allowed_categories:
+            flash('Please select a valid feedback category.', 'error')
+            return redirect(url_for('feedback'))
+
+        if not title or len(title) > 120:
+            flash('Please provide a short feedback title (maximum 120 characters).', 'error')
+            return redirect(url_for('feedback'))
+
+        if not message or len(message) > 2000:
+            flash('Please provide feedback between 1 and 2000 characters.', 'error')
+            return redirect(url_for('feedback'))
+
+        if rating is not None and rating not in range(1, 6):
+            flash('Rating must be between 1 and 5.', 'error')
+            return redirect(url_for('feedback'))
+
+        conn = get_db_connection()
+        cursor = conn.cursor()
+        cursor.execute('''
+            INSERT INTO feedback
+                (user_email, user_name, category, rating, title, message)
+            VALUES (%s, %s, %s, %s, %s, %s)
+        ''', (
+            session['user']['email'],
+            session['user']['name'],
+            category,
+            rating,
+            title,
+            message
+        ))
+        conn.commit()
+        cursor.close()
+        conn.close()
+
+        flash('Thanks! Your feedback has been added to the community feedback board.', 'success')
+        return redirect(url_for('feedback'))
+
+    selected_category = request.args.get('category', 'All').strip()
+    selected_sort = request.args.get('sort', 'newest').strip()
+
+    if selected_category not in allowed_categories:
+        selected_category = 'All'
+
+    sort_map = {
+        'newest': 'created_at DESC, id DESC',
+        'oldest': 'created_at ASC, id ASC',
+        'highest': 'rating DESC NULLS LAST, created_at DESC, id DESC',
+        'lowest': 'rating ASC NULLS LAST, created_at DESC, id DESC'
+    }
+    if selected_sort not in sort_map:
+        selected_sort = 'newest'
+
+    conn = get_db_connection()
+    cursor = conn.cursor()
+
+    if selected_category == 'All':
+        cursor.execute(f"SELECT * FROM feedback ORDER BY {sort_map[selected_sort]}")
+    else:
+        cursor.execute(
+            f"SELECT * FROM feedback WHERE category = %s ORDER BY {sort_map[selected_sort]}",
+            (selected_category,)
+        )
+
+    columns = [col[0] for col in cursor.description]
+    feedback_items = [dict(zip(columns, row)) for row in cursor.fetchall()]
+
+    cursor.execute("SELECT COUNT(*) FROM feedback")
+    total_feedback = cursor.fetchone()[0]
+
+    cursor.execute("SELECT COUNT(*) FROM feedback WHERE category = 'Bug / Problem'")
+    bug_count = cursor.fetchone()[0]
+
+    cursor.execute("SELECT COUNT(*) FROM feedback WHERE category = 'Feature Request'")
+    feature_count = cursor.fetchone()[0]
+
+    cursor.execute("SELECT COUNT(*) FROM feedback WHERE category = 'Success Story'")
+    success_count = cursor.fetchone()[0]
+
+    cursor.execute("SELECT AVG(rating) FROM feedback WHERE rating IS NOT NULL")
+    avg_rating = cursor.fetchone()[0]
+    avg_rating = round(float(avg_rating), 1) if avg_rating is not None else None
+
+    cursor.close()
+    conn.close()
+
+    return render_template(
+        'feedback.html',
+        feedback_items=feedback_items,
+        total_feedback=total_feedback,
+        bug_count=bug_count,
+        feature_count=feature_count,
+        success_count=success_count,
+        avg_rating=avg_rating,
+        selected_category=selected_category,
+        selected_sort=selected_sort
+    )
+
 
 @app.route('/submit', methods=['POST'])
 def submit():
