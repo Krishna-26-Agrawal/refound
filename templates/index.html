@@ -85,7 +85,8 @@ Feedback
 <!-- SECTION: Centered Report Item Form with Dynamic Lost/Found Fields -->
 <section class="w-full px-margin py-space-md bg-surface-container-low mb-space-xl max-w-3xl mx-auto rounded-2xl shadow-sm border border-outline-variant/30">
 <h2 class="font-headline-md text-headline-md text-on-surface mb-space-md text-center">Report Lost or Found Item</h2>
-<form action="{{ url_for('submit') }}" class="grid grid-cols-1 md:grid-cols-2 gap-space-md" enctype="multipart/form-data" method="POST">
+<form action="{{ url_for('submit') }}" class="grid
+<input type="hidden" name="csrf_token" value="{{ csrf_token }}"/> grid-cols-1 md:grid-cols-2 gap-space-md" enctype="multipart/form-data" method="POST">
 <div class="flex flex-col gap-space-xs md:col-span-2">
 <label class="font-label-sm text-label-sm text-on-surface-variant">Report Type</label>
 <select id="report_type_select" class="p-2.5 rounded-lg bg-surface border border-outline-variant outline-none focus:border-primary" name="report_type" required onchange="toggleReportFields()">
@@ -187,7 +188,8 @@ Feedback
 <span class="text-outline">Posted by: {{ item.user_name }}</span>
 <span class="text-outline">ID #{{ item.id }}</span>
 </div>
-<form action="{{ url_for('resolve', item_id=item.id) }}" class="grid grid-cols-2 gap-space-xs" method="POST">
+<form action="{{ url_for('resolve', item_id=item.id) }}" class="grid
+<input type="hidden" name="csrf_token" value="{{ csrf_token }}"/> grid-cols-2 gap-space-xs" method="POST">
 <button class="py-2 px-space-sm rounded-lg bg-secondary hover:bg-on-secondary-container text-on-secondary font-label-md text-label-md flex items-center justify-center gap-1 transition-all cursor-pointer" name="action" type="submit" value="resolve">Mark Resolved</button>
 <button class="py-2 px-space-sm rounded-lg bg-error-container hover:bg-error text-on-error-container font-label-md text-label-md flex items-center justify-center gap-1 transition-all cursor-pointer" name="action" type="submit" value="delete">Delete</button>
 </form>
