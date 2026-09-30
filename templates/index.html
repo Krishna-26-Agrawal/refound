@@ -4,279 +4,588 @@
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <meta content="web_standard" name="shell-type"/>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com" rel="preconnect"/>
 <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Plus+Jakarta+Sans:wght@600;700;800&amp;display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
-<style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet"/>
 <script src="https://cdn.tailwindcss.com"></script>
-<script id="tailwind-config">tailwind.config = { darkMode: "class", theme: { extend: { "colors": { "tertiary": "#684000", "primary-fixed": "#e2dfff", "tertiary-container": "#885500", "on-surface-variant": "#464555", "background": "#fbf8ff", "secondary-fixed-dim": "#4edea3", "on-tertiary-container": "#ffd4a4", "on-primary": "#ffffff", "on-surface": "#1a1b22", "on-error": "#ffffff", "secondary": "#006c49", "primary-fixed-dim": "#c3c0ff", "on-primary-fixed": "#0f0069", "on-error-container": "#93000a", "secondary-container": "#6cf8bb", "tertiary-fixed": "#ffddb8", "on-secondary-container": "#00714d", "surface-container-highest": "#e3e1ec", "on-tertiary-fixed-variant": "#653e00", "on-background": "#1a1b22", "error": "#ba1a1a", "on-tertiary-fixed": "#2a1700", "surface-tint": "#4d44e3", "on-primary-container": "#dad7ff", "primary-container": "#4f46e5", "on-secondary-fixed-variant": "#005236", "secondary-fixed": "#6ffbbe", "tertiary-fixed-dim": "#ffb95f", "surface-container-low": "#f4f2fd", "on-secondary": "#ffffff", "inverse-primary": "#c3c0ff", "surface-dim": "#dad9e3", "error-container": "#ffdad6", "on-secondary-fixed": "#002113", "outline": "#777587", "outline-variant": "#c7c4d8", "surface-container-high": "#e8e7f1", "surface-bright": "#fbf8ff", "primary": "#3525cd", "surface-container": "#eeedf7", "surface-variant": "#e3e1ec", "on-primary-fixed-variant": "#3323cc", "surface": "#fbf8ff", "surface-container-lowest": "#ffffff", "on-tertiary": "#ffffff", "inverse-on-surface": "#f1effa", "inverse-surface": "#2f3038" }, "borderRadius": { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" }, "spacing": { "space-xl": "2.5rem", "space-lg": "1.5rem", "margin-sm": "1rem", "space-sm": "0.5rem", "gutter": "1.5rem", "space-xs": "0.25rem", "margin": "2rem", "gutter-sm": "1rem", "space-md": "1rem" }, "fontFamily": { "display-lg-mobile": [ "Plus Jakarta Sans" ], "headline-lg-mobile": [ "Plus Jakarta Sans" ], "body-sm": [ "Inter" ], "headline-md": [ "Plus Jakarta Sans" ], "headline-lg": [ "Plus Jakarta Sans" ], "headline-sm": [ "Plus Jakarta Sans" ], "label-sm": [ "Plus Jakarta Sans" ], "label-lg": [ "Plus Jakarta Sans" ], "body-lg": [ "Inter" ], "label-md": [ "Plus Jakarta Sans" ], "display-lg": [ "Plus Jakarta Sans" ], "body-md": [ "Inter" ] } } } };</script>
-</head>
-<body class="bg-surface font-body-md text-on-surface antialiased flex flex-col min-h-screen">
+<script>
+tailwind.config = {
+  darkMode: "class",
+  theme: {
+    extend: {
+      colors: {
+        tertiary: "#684000",
+        primary: "#3525cd",
+        "primary-container": "#4f46e5",
+        "primary-fixed": "#e2dfff",
+        "primary-fixed-dim": "#c3c0ff",
+        "on-primary": "#ffffff",
+        "on-primary-container": "#dad7ff",
+        "secondary": "#006c49",
+        "secondary-container": "#6cf8bb",
+        "on-secondary": "#ffffff",
+        "on-secondary-container": "#00714d",
+        error: "#ba1a1a",
+        "error-container": "#ffdad6",
+        "on-error": "#ffffff",
+        "on-error-container": "#93000a",
+        background: "#fbf8ff",
+        "on-background": "#1a1b22",
+        surface: "#fbf8ff",
+        "surface-container-lowest": "#ffffff",
+        "surface-container-low": "#f4f2fd",
+        "surface-container": "#eeedf7",
+        "surface-container-high": "#e8e7f1",
+        "surface-container-highest": "#e3e1ec",
+        "on-surface": "#1a1b22",
+        "on-surface-variant": "#464555",
+        outline: "#777587",
+        "outline-variant": "#c7c4d8"
+      },
+      borderRadius: {
+        DEFAULT: "0.25rem",
+        lg: "0.5rem",
+        xl: "0.75rem",
+        "2xl": "1rem",
+        full: "9999px"
+      },
+      spacing: {
+        "space-xl": "2.5rem",
+        "space-lg": "1.5rem",
+        "space-md": "1rem",
+        "space-sm": "0.5rem",
+        "space-xs": "0.25rem",
+        margin: "2rem",
+        gutter: "1.5rem"
+      },
+      fontFamily: {
+        display: ["Plus Jakarta Sans"],
+        headline: ["Plus Jakarta Sans"],
+        body: ["Inter"]
+      }
+    }
+  }
+};
+</script>
+<style>
+@layer base {
+  html, body { margin: 0; padding: 0; }
+  body { overscroll-behavior: none; }
+}
+::-webkit-scrollbar { display: none; }
 
-<!-- SECTION: Navigation Header -->
+.item-card {
+  transition: transform 180ms ease, box-shadow 180ms ease;
+}
+.item-card:hover {
+  transform: translateY(-2px);
+}
+.filter-hidden {
+  display: none !important;
+}
+</style>
+</head>
+
+<body class="bg-surface font-body text-on-surface antialiased flex flex-col min-h-screen">
+
+<!-- Navigation -->
 <header class="fixed top-0 left-0 w-full z-50 bg-surface/90 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.04)]">
-<div class="h-20 w-full flex items-center justify-between px-margin border-b border-outline-variant/30 max-w-7xl mx-auto">
-<div class="flex items-center gap-space-xl">
-<a class="flex items-center gap-space-sm" href="#">
-<span class="font-headline-sm text-headline-sm text-primary tracking-tight font-bold">ReFound</span>
-</a>
-</div>
-<div class="flex items-center gap-space-md">
-{% if session.get('user') %}
-<a class="hidden sm:inline-flex items-center gap-1.5 px-space-md py-2 rounded-lg border border-outline-variant bg-surface hover:bg-surface-container text-on-surface font-label-md transition-colors" href="{{ url_for('feedback') }}">
-<span class="material-symbols-outlined text-[18px]">forum</span>
-Feedback
-</a>
-<span class="font-label-md text-on-surface">Hi, {{ session['user']['name'] }}</span>
-<a class="inline-flex items-center px-space-md py-2 rounded-lg border border-outline-variant bg-surface hover:bg-surface-container text-on-surface font-label-md transition-colors" href="{{ url_for('logout') }}">Logout</a>
-{% else %}
-<a class="inline-flex items-center px-space-md py-2 rounded-lg bg-primary hover:bg-primary-container text-on-primary font-label-md shadow-sm transition-all" href="{{ url_for('login') }}">Login with Google</a>
-{% endif %}
-</div>
-</div>
+  <div class="h-20 w-full flex items-center justify-between px-4 md:px-8 border-b border-outline-variant/30 max-w-7xl mx-auto">
+    <a class="flex items-center gap-2" href="{{ url_for('index') }}">
+      <span class="font-headline text-xl text-primary tracking-tight font-bold">ReFound</span>
+    </a>
+
+    <div class="flex items-center gap-4">
+      {% if session.get('user') %}
+        <span class="hidden sm:inline font-semibold text-on-surface">
+          Hi, {{ session['user']['name'] }}
+        </span>
+        <a class="inline-flex items-center px-4 py-2 rounded-lg border border-outline-variant bg-surface hover:bg-surface-container text-on-surface font-semibold transition-colors"
+           href="{{ url_for('logout') }}">Logout</a>
+      {% else %}
+        <a class="inline-flex items-center px-4 py-2 rounded-lg bg-primary hover:bg-primary-container text-on-primary font-semibold shadow-sm transition-all"
+           href="{{ url_for('login') }}">Login with Google</a>
+      {% endif %}
+    </div>
+  </div>
 </header>
 
-<main class="w-full bg-surface pt-32 pb-space-xl flex-grow">
-<!-- SECTION: Flask Flash Messages -->
+<main class="w-full pt-28 pb-12 flex-grow">
+
+<!-- Flash messages -->
 {% with messages = get_flashed_messages(with_categories=true) %}
-{% if messages %}
-<div class="max-w-4xl mx-auto px-margin mb-space-md">
-{% for category, message in messages %}
-<div class="p-4 rounded-xl font-body-md shadow-sm text-center {% if category == 'error' %}bg-error-container text-on-error-container{% else %}bg-secondary-container text-on-secondary-container{% endif %}">
-{{ message }}
-</div>
-{% endfor %}
-</div>
-{% endif %}
+  {% if messages %}
+    <div class="max-w-4xl mx-auto px-4 md:px-8 mb-6">
+      {% for category, message in messages %}
+        <div class="p-4 rounded-xl font-body shadow-sm text-center
+          {% if category == 'error' %}
+            bg-error-container text-on-error-container
+          {% else %}
+            bg-secondary-container text-on-secondary-container
+          {% endif %}">
+          {{ message }}
+        </div>
+      {% endfor %}
+    </div>
+  {% endif %}
 {% endwith %}
 
 <div class="flex flex-col w-full items-center">
 
-<!-- SECTION: Hero & Enlarged Top Text -->
-<section class="w-full px-margin pb-space-lg relative overflow-hidden bg-surface flex flex-col items-center text-center">
-<div class="max-w-5xl mx-auto flex flex-col items-center text-center">
-<div class="inline-flex items-center gap-2 px-space-md py-1 rounded-full bg-surface-container-high text-on-surface font-label-sm text-label-sm mb-space-md shadow-sm">
-<span class="material-symbols-outlined text-secondary text-[18px]">verified</span>
-<span>Community Lost &amp; Found Registry</span>
-</div>
-<h1 class="text-4xl md:text-6xl lg:text-7xl font-extrabold text-on-surface max-w-4xl tracking-tight leading-tight">Nothing is truly lost when <span class="text-primary underline decoration-secondary-container decoration-4">we look together</span>.</h1>
-<p class="font-body-lg text-body-lg text-on-surface-variant max-w-xl mt-space-sm mb-space-lg">The civic network connecting people with their misplaced belongings, keys, and pets in real time.</p>
+<!-- Hero -->
+<section class="w-full px-4 md:px-8 pb-8 relative overflow-hidden bg-surface flex flex-col items-center text-center">
+  <div class="max-w-5xl mx-auto flex flex-col items-center">
+    <div class="inline-flex items-center gap-2 px-4 py-1 rounded-full bg-surface-container-high text-on-surface font-semibold mb-4 shadow-sm">
+      <span class="material-symbols-outlined text-secondary text-[18px]">verified</span>
+      <span>Community Lost &amp; Found Registry</span>
+    </div>
 
-<!-- Real-Time Synced Statistics -->
-<div class="w-full max-w-4xl grid grid-cols-1 md:grid-cols-3 gap-gutter text-left mt-space-md">
-<div class="bg-surface-container-lowest p-space-md rounded-xl shadow-sm border border-outline-variant/20 flex flex-col justify-between">
-<div class="flex items-center justify-between mb-space-sm"><span class="p-2 rounded-lg bg-primary/10 text-primary"><span class="material-symbols-outlined text-[22px]">inventory_2</span></span><span class="text-outline font-label-sm">Current Total</span></div>
-<div><div class="font-headline-lg text-headline-lg text-on-surface font-bold tracking-tight">{{ total_registered }}</div><div class="font-body-sm text-body-sm text-on-surface-variant mt-0.5">Items Registered (Real-Time)</div></div>
-</div>
-<div class="bg-surface-container-lowest p-space-md rounded-xl shadow-sm border border-outline-variant/20 flex flex-col justify-between">
-<div class="flex items-center justify-between mb-space-sm"><span class="p-2 rounded-lg bg-secondary/10 text-secondary"><span class="material-symbols-outlined text-[22px]">handshake</span></span><span class="px-2 py-0.5 rounded-full bg-secondary-container text-on-secondary-container font-label-sm font-semibold">Active</span></div>
-<div><div class="font-headline-lg text-headline-lg text-secondary font-bold tracking-tight">{{ total_reunited }}</div><div class="font-body-sm text-body-sm text-on-surface-variant mt-0.5">Successfully Reunited</div></div>
-</div>
-<div class="bg-surface-container-lowest p-space-md rounded-xl shadow-sm border border-outline-variant/20 flex flex-col justify-between">
-<div class="flex items-center justify-between mb-space-sm"><span class="p-2 rounded-lg bg-primary/10 text-primary"><span class="material-symbols-outlined text-[22px]">schedule</span></span><span class="text-outline font-label-sm">Median Speed</span></div>
-<div><div class="font-headline-lg text-headline-lg text-on-surface font-bold tracking-tight">{{ median_speed }}</div><div class="font-body-sm text-body-sm text-on-surface-variant mt-0.5">Average Resolution Time</div></div>
-</div>
-</div>
-</div>
+    <h1 class="text-4xl md:text-6xl lg:text-7xl font-extrabold text-on-surface max-w-4xl tracking-tight leading-tight">
+      Nothing is truly lost when
+      <span class="text-primary underline decoration-secondary-container decoration-4">we look together</span>.
+    </h1>
+
+    <p class="text-base md:text-lg text-on-surface-variant max-w-xl mt-3 mb-8">
+      A simple campus network for reporting lost items, sharing found items, and helping belongings get back to their owners.
+    </p>
+
+    <!-- Existing live statistics -->
+    <div class="w-full max-w-4xl grid grid-cols-1 md:grid-cols-3 gap-6 text-left mt-2">
+      <div class="bg-surface-container-lowest p-4 rounded-xl shadow-sm border border-outline-variant/20">
+        <div class="flex items-center justify-between mb-2">
+          <span class="p-2 rounded-lg bg-primary/10 text-primary">
+            <span class="material-symbols-outlined text-[22px]">inventory_2</span>
+          </span>
+          <span class="text-outline text-sm">Current Total</span>
+        </div>
+        <div class="text-3xl text-on-surface font-bold tracking-tight">{{ total_registered }}</div>
+        <div class="text-sm text-on-surface-variant mt-0.5">Items Registered</div>
+      </div>
+
+      <div class="bg-surface-container-lowest p-4 rounded-xl shadow-sm border border-outline-variant/20">
+        <div class="flex items-center justify-between mb-2">
+          <span class="p-2 rounded-lg bg-secondary/10 text-secondary">
+            <span class="material-symbols-outlined text-[22px]">handshake</span>
+          </span>
+          <span class="px-2 py-0.5 rounded-full bg-secondary-container text-on-secondary-container text-sm font-semibold">Active</span>
+        </div>
+        <div class="text-3xl text-secondary font-bold tracking-tight">{{ total_reunited }}</div>
+        <div class="text-sm text-on-surface-variant mt-0.5">Successfully Reunited</div>
+      </div>
+
+      <div class="bg-surface-container-lowest p-4 rounded-xl shadow-sm border border-outline-variant/20">
+        <div class="flex items-center justify-between mb-2">
+          <span class="p-2 rounded-lg bg-primary/10 text-primary">
+            <span class="material-symbols-outlined text-[22px]">schedule</span>
+          </span>
+          <span class="text-outline text-sm">Median Speed</span>
+        </div>
+        <div class="text-3xl text-on-surface font-bold tracking-tight">{{ median_speed }}</div>
+        <div class="text-sm text-on-surface-variant mt-0.5">Average Resolution Time</div>
+      </div>
+    </div>
+  </div>
 </section>
 
-<!-- SECTION: Centered Report Item Form with Dynamic Lost/Found Fields -->
-<section class="w-full px-margin py-space-md bg-surface-container-low mb-space-xl max-w-3xl mx-auto rounded-2xl shadow-sm border border-outline-variant/30">
-<h2 class="font-headline-md text-headline-md text-on-surface mb-space-md text-center">Report Lost or Found Item</h2>
-<form action="{{ url_for('submit') }}" class="grid
-<input type="hidden" name="csrf_token" value="{{ csrf_token }}"/> grid-cols-1 md:grid-cols-2 gap-space-md" enctype="multipart/form-data" method="POST">
-<div class="flex flex-col gap-space-xs md:col-span-2">
-<label class="font-label-sm text-label-sm text-on-surface-variant">Report Type</label>
-<select id="report_type_select" class="p-2.5 rounded-lg bg-surface border border-outline-variant outline-none focus:border-primary" name="report_type" required onchange="toggleReportFields()">
-<option value="Lost" {% if form_data.get('report_type') == 'Lost' %}selected{% endif %}>Lost</option>
-<option value="Found" {% if form_data.get('report_type') == 'Found' %}selected{% endif %}>Found</option>
-</select>
-</div>
-<div class="flex flex-col gap-space-xs">
-<label class="font-label-sm text-label-sm text-on-surface-variant">Item Name (Letters only)</label>
-<input class="p-2.5 rounded-lg bg-surface border border-outline-variant outline-none focus:border-primary" name="item_name" required type="text" value="{{ form_data.get('item_name', '') }}"/>
-</div>
-<div class="flex flex-col gap-space-xs">
-<label class="font-label-sm text-label-sm text-on-surface-variant">Category</label>
-<select class="p-2.5 rounded-lg bg-surface border border-outline-variant outline-none focus:border-primary" name="category" required>
-<option value="Tech &amp; Electronics">Tech &amp; Electronics</option>
-<option value="Pets &amp; Animals">Pets &amp; Animals</option>
-<option value="Wallets, IDs &amp; Keys">Wallets, IDs &amp; Keys</option>
-<option value="Bags &amp; Luggage">Bags &amp; Luggage</option>
-<option value="Other">Other</option>
-</select>
-</div>
+<!-- Reporting form: structure follows the attached reference, while keeping ReFound's existing route/field names -->
+<section class="w-full px-4 md:px-8 py-6 bg-surface-container-low mb-10">
+  <div class="max-w-3xl mx-auto bg-surface-container-lowest rounded-2xl shadow-sm border border-outline-variant/30 p-5 md:p-7">
+    <div class="text-center mb-6">
+      <h2 class="font-headline text-2xl font-bold text-on-surface">Report an Item</h2>
+      <p class="text-sm text-on-surface-variant mt-1">
+        Tell the campus community what you lost or found.
+      </p>
+    </div>
 
-<!-- Conditional Field for Found Cases -->
-<div id="field_location" class="flex flex-col gap-space-xs">
-<label class="font-label-sm text-label-sm text-on-surface-variant">Location Found</label>
-<input class="p-2.5 rounded-lg bg-surface border border-outline-variant outline-none focus:border-primary" name="location" type="text" value="{{ form_data.get('location', '') }}"/>
-</div>
+    <form action="{{ url_for('submit') }}" method="POST" enctype="multipart/form-data"
+          class="grid grid-cols-1 md:grid-cols-2 gap-4">
 
-<!-- Conditional Field for Lost Cases -->
-<div id="field_phone" class="flex flex-col gap-space-xs">
-<label class="font-label-sm text-label-sm text-on-surface-variant">Phone Number (10 digits starting with 6-9)</label>
-<input class="p-2.5 rounded-lg bg-surface border border-outline-variant outline-none focus:border-primary" name="phone_number" type="text" value="{{ form_data.get('phone_number', '') }}"/>
-</div>
+      <div class="flex flex-col gap-1 md:col-span-2">
+        <label class="text-sm font-semibold text-on-surface-variant">Report Type</label>
+        <select name="report_type" id="report_type_select"
+                onchange="toggleReportFields()" required
+                class="w-full p-3 rounded-lg bg-surface border border-outline-variant outline-none focus:border-primary">
+          <option value="Lost" {% if form_data.get('report_type') == 'Lost' or not form_data.get('report_type') %}selected{% endif %}>I lost something</option>
+          <option value="Found" {% if form_data.get('report_type') == 'Found' %}selected{% endif %}>I found something</option>
+        </select>
+      </div>
 
-<div class="flex flex-col gap-space-xs md:col-span-2">
-<label class="font-label-sm text-label-sm text-on-surface-variant">Description</label>
-<textarea class="p-2.5 rounded-lg bg-surface border border-outline-variant outline-none focus:border-primary" name="description">{{ form_data.get('description', '') }}</textarea>
-</div>
+      <div class="flex flex-col gap-1">
+        <label class="text-sm font-semibold text-on-surface-variant">Item Name</label>
+        <input name="item_name" type="text" required
+               value="{{ form_data.get('item_name', '') }}"
+               placeholder="e.g. Black Wallet"
+               class="w-full p-3 rounded-lg bg-surface border border-outline-variant outline-none focus:border-primary"/>
+      </div>
 
-<!-- Conditional Field specific to Found Cases -->
-<div id="field_who_has_it" class="flex flex-col gap-space-xs md:col-span-2">
-<label class="font-label-sm text-label-sm text-on-surface-variant">Who Has It / Hand-off Location</label>
-<input class="p-2.5 rounded-lg bg-surface border border-outline-variant outline-none focus:border-primary" name="who_has_it" type="text" value="{{ form_data.get('who_has_it', '') }}"/>
-</div>
+      <div class="flex flex-col gap-1">
+        <label class="text-sm font-semibold text-on-surface-variant">Category</label>
+        <select name="category" required
+                class="w-full p-3 rounded-lg bg-surface border border-outline-variant outline-none focus:border-primary">
+          <option value="Tech &amp; Electronics">Tech &amp; Electronics</option>
+          <option value="Pets &amp; Animals">Pets &amp; Animals</option>
+          <option value="Wallets, IDs &amp; Keys">Wallets, IDs &amp; Keys</option>
+          <option value="Bags &amp; Luggage">Bags &amp; Luggage</option>
+          <option value="Other">Other</option>
+        </select>
+      </div>
 
-<div class="flex flex-col gap-space-xs md:col-span-2">
-<label class="font-label-sm text-label-sm text-on-surface-variant">Photo (Optional)</label>
-<input class="p-2 text-sm bg-surface rounded-lg border border-outline-variant" name="photo" type="file"/>
-</div>
-<div class="md:col-span-2 text-center mt-space-sm">
-<button class="w-full md:w-auto px-space-xl py-3 rounded-lg bg-primary hover:bg-primary-container text-on-primary font-label-md shadow-sm transition-all cursor-pointer" type="submit">Submit Report</button>
-</div>
-</form>
+      <!-- Kept as a common field in the form structure; backend still validates it only for Found reports. -->
+      <div class="flex flex-col gap-1">
+        <label class="text-sm font-semibold text-on-surface-variant">Location</label>
+        <input name="location" type="text"
+               value="{{ form_data.get('location', '') }}"
+               placeholder="Where was it lost/found?"
+               class="w-full p-3 rounded-lg bg-surface border border-outline-variant outline-none focus:border-primary"/>
+      </div>
+
+      <div class="flex flex-col gap-1">
+        <label class="text-sm font-semibold text-on-surface-variant">Phone Number</label>
+        <input name="phone_number" type="text"
+               value="{{ form_data.get('phone_number', '') }}"
+               placeholder="10 digits starting with 6-9"
+               class="w-full p-3 rounded-lg bg-surface border border-outline-variant outline-none focus:border-primary"/>
+      </div>
+
+      <div class="flex flex-col gap-1 md:col-span-2">
+        <label class="text-sm font-semibold text-on-surface-variant">Description</label>
+        <textarea name="description" rows="4" required
+                  placeholder="Brand, color, identifiable marks, or any other useful details"
+                  class="w-full p-3 rounded-lg bg-surface border border-outline-variant outline-none focus:border-primary resize-y">{{ form_data.get('description', '') }}</textarea>
+      </div>
+
+      <!-- Found-only fields, following the reference structure -->
+      <div id="found_fields" class="md:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div class="flex flex-col gap-1">
+          <label class="text-sm font-semibold text-on-surface-variant">Who Has It / Hand-off Location</label>
+          <input name="who_has_it" type="text"
+                 value="{{ form_data.get('who_has_it', '') }}"
+                 placeholder="e.g. Security Gate 2, Myself"
+                 class="w-full p-3 rounded-lg bg-surface border border-outline-variant outline-none focus:border-primary"/>
+        </div>
+
+        <div class="flex flex-col gap-1">
+          <label class="text-sm font-semibold text-on-surface-variant">Upload Photo</label>
+          <input name="photo" type="file" accept="image/png,image/jpeg,image/gif"
+                 class="w-full p-2.5 text-sm bg-surface rounded-lg border border-outline-variant"/>
+        </div>
+      </div>
+
+      <div class="md:col-span-2 text-center pt-2">
+        <button type="submit"
+                class="w-full md:w-auto px-8 py-3 rounded-lg bg-primary hover:bg-primary-container text-on-primary font-semibold shadow-sm transition-all cursor-pointer">
+          Submit Report
+        </button>
+      </div>
+    </form>
+  </div>
 </section>
 
-<!-- SECTION: Main Directory Grid with Standardized & Zoomable Images -->
-<section class="w-full px-margin py-space-xl bg-surface max-w-7xl mx-auto">
-<div class="flex flex-col gap-space-md w-full">
-<div class="bg-surface-container-lowest p-space-sm px-space-md rounded-xl shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-space-sm">
-<div class="flex items-center gap-space-xs">
-<span class="font-headline-sm text-headline-sm text-on-surface">Active Sightings &amp; Listings</span>
-</div>
-</div>
-<div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-gutter justify-center">
-{% for item in lost_items + found_items %}
-<article class="bg-surface-container-lowest rounded-xl shadow-sm hover:shadow-xl transition-all duration-200 flex flex-col overflow-hidden group">
-<div class="relative w-full h-48 overflow-hidden bg-surface-container cursor-pointer" onclick="openLightbox('{{ item.photo_path if item.photo_path else '' }}', '{{ item.item_name }}')">
-{% if item.photo_path %}
-<img alt="{{ item.item_name }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" src="{{ item.photo_path }}"/>
-{% else %}
-<div class="w-full h-full flex items-center justify-center bg-surface-container-high text-outline">No Image</div>
-{% endif %}
-<div class="absolute top-2.5 left-2.5 flex items-center gap-1">
-<span class="px-2.5 py-1 rounded-full {% if item.report_type == 'Lost' %}bg-error text-on-error{% else %}bg-primary text-on-primary{% endif %} font-label-sm text-label-sm font-bold shadow-md">{{ item.report_type }}</span>
-</div>
-<div class="absolute bottom-2.5 right-2.5 bg-surface/80 backdrop-blur-sm px-2 py-0.5 rounded text-xs text-on-surface opacity-0 group-hover:opacity-100 transition-opacity">Click to expand</div>
-</div>
-<div class="p-space-md flex flex-col flex-1 justify-between">
-<div>
-<div class="flex items-center justify-between text-outline font-body-sm text-body-sm mb-1">
-<span class="flex items-center gap-1 text-on-surface-variant font-medium">
-<span class="material-symbols-outlined text-[16px] text-primary">location_pin</span>
-{{ item.location if item.location else 'Campus Area' }}
-</span>
-<span>{{ item.category }}</span>
-</div>
-<h3 class="font-headline-sm text-headline-sm text-on-surface font-semibold group-hover:text-primary transition-colors">
-{{ item.item_name }}
-</h3>
-<p class="font-body-sm text-body-sm text-on-surface-variant mt-1.5 line-clamp-2">
-{{ item.description }}
-</p>
-{% if item.action_required %}
-<p class="text-xs text-error font-bold mt-2">⚠️ Review required (Older than 30 days)</p>
-{% endif %}
-</div>
-<div class="mt-space-md pt-space-sm border-t border-outline-variant/20">
-<div class="flex items-center justify-between text-label-sm font-semibold mb-space-sm">
-<span class="text-outline">Posted by: {{ item.user_name }}</span>
-<span class="text-outline">ID #{{ item.id }}</span>
-</div>
-<form action="{{ url_for('resolve', item_id=item.id) }}" class="grid
-<input type="hidden" name="csrf_token" value="{{ csrf_token }}"/> grid-cols-2 gap-space-xs" method="POST">
-<button class="py-2 px-space-sm rounded-lg bg-secondary hover:bg-on-secondary-container text-on-secondary font-label-md text-label-md flex items-center justify-center gap-1 transition-all cursor-pointer" name="action" type="submit" value="resolve">Mark Resolved</button>
-<button class="py-2 px-space-sm rounded-lg bg-error-container hover:bg-error text-on-error-container font-label-md text-label-md flex items-center justify-center gap-1 transition-all cursor-pointer" name="action" type="submit" value="delete">Delete</button>
-</form>
-</div>
-</div>
-</article>
-{% else %}
-<div class="col-span-full py-12 text-center text-outline">
-<p class="font-headline-sm">No active listings match your current view.</p>
-</div>
-{% endfor %}
-</div>
-</div>
+<!-- Dashboard: separate Found and Lost sections -->
+<section class="w-full px-4 md:px-8 py-6 bg-surface max-w-7xl mx-auto">
+  <div class="flex flex-col gap-6 w-full">
+
+    <!-- Dashboard header / filter -->
+    <div class="bg-surface-container-lowest p-4 md:p-5 rounded-xl shadow-sm border border-outline-variant/20">
+      <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div>
+          <h2 class="font-headline text-2xl font-bold text-on-surface">Active Dashboard</h2>
+          <p class="text-sm text-on-surface-variant mt-1">
+            Browse active found and lost reports from the campus community.
+          </p>
+        </div>
+
+        <div class="flex items-center gap-3">
+          <label for="category_filter" class="text-sm font-semibold text-on-surface-variant whitespace-nowrap">
+            Filter by Category:
+          </label>
+          <select id="category_filter" onchange="filterItems()"
+                  class="p-2.5 rounded-lg bg-surface border border-outline-variant outline-none focus:border-primary">
+            <option value="All">All Categories</option>
+            <option value="Tech &amp; Electronics">Tech &amp; Electronics</option>
+            <option value="Pets &amp; Animals">Pets &amp; Animals</option>
+            <option value="Wallets, IDs &amp; Keys">Wallets, IDs &amp; Keys</option>
+            <option value="Bags &amp; Luggage">Bags &amp; Luggage</option>
+            <option value="Other">Other</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <!-- FOUND SECTION -->
+    <section class="bg-surface-container-lowest rounded-2xl shadow-sm border border-outline-variant/20 p-4 md:p-6">
+      <div class="flex items-center justify-between mb-5">
+        <div>
+          <h3 class="font-headline text-xl md:text-2xl font-bold text-on-surface">Items People Have Found</h3>
+          <p class="text-sm text-on-surface-variant mt-1">Items currently reported as found.</p>
+        </div>
+        <span class="px-3 py-1 rounded-full bg-secondary-container text-on-secondary-container text-sm font-semibold">
+          {{ found_items|length }} Found
+        </span>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6" id="found-grid">
+        {% for item in found_items %}
+        <article class="item-card found-card bg-surface rounded-xl shadow-sm border border-outline-variant/20 overflow-hidden flex flex-col"
+                 data-category="{{ item.category }}">
+
+          <div class="relative w-full h-48 overflow-hidden bg-surface-container cursor-pointer"
+               onclick="openLightbox('{{ item.photo_path if item.photo_path else '' }}', '{{ item.item_name|e }}')">
+            {% if item.photo_path %}
+              <img src="{{ item.photo_path }}" alt="{{ item.item_name }}"
+                   class="w-full h-full object-cover hover:scale-105 transition-transform duration-300"/>
+            {% else %}
+              <div class="w-full h-full flex items-center justify-center bg-surface-container-high text-outline">
+                <div class="text-center">
+                  <span class="material-symbols-outlined text-4xl">image</span>
+                  <p class="text-sm mt-1">No Image</p>
+                </div>
+              </div>
+            {% endif %}
+
+            <div class="absolute top-3 left-3 flex gap-2">
+              <span class="px-2.5 py-1 rounded-full bg-primary text-on-primary text-xs font-bold shadow-md">FOUND</span>
+              <span class="px-2.5 py-1 rounded-full bg-surface/90 backdrop-blur-sm text-on-surface text-xs font-semibold">
+                {{ item.category }}
+              </span>
+            </div>
+          </div>
+
+          <div class="p-5 flex flex-col flex-1">
+            <div class="flex-1">
+              <div class="flex items-center gap-1 text-sm text-on-surface-variant mb-1">
+                <span class="material-symbols-outlined text-[17px] text-primary">location_pin</span>
+                {{ item.location }}
+              </div>
+
+              <h4 class="font-headline text-xl font-bold text-on-surface">{{ item.item_name }}</h4>
+
+              <p class="text-sm text-on-surface-variant mt-2">
+                {{ item.description }}
+              </p>
+
+              {% if item.who_has_it %}
+              <p class="text-sm mt-3">
+                <strong>Who has it:</strong> {{ item.who_has_it }}
+              </p>
+              {% endif %}
+
+              {% if item.phone_number %}
+              <p class="text-sm mt-1">
+                <strong>Contact:</strong> {{ item.phone_number }}
+              </p>
+              {% endif %}
+
+              <p class="text-xs text-outline mt-3">
+                Found {{ item.days_passed }} day{% if item.days_passed != 1 %}s{% endif %} ago
+              </p>
+
+              {% if item.action_required %}
+              <p class="text-xs text-error font-bold mt-2">
+                ⚠️ Unclaimed for more than 30 days
+              </p>
+              {% endif %}
+            </div>
+
+            <div class="mt-5 pt-4 border-t border-outline-variant/20">
+              <div class="flex items-center justify-between text-xs text-outline mb-3">
+                <span>Posted by: {{ item.user_name }}</span>
+                <span>ID #{{ item.id }}</span>
+              </div>
+
+              <form action="{{ url_for('resolve', item_id=item.id) }}" method="POST">
+                <button type="submit" name="action" value="resolve"
+                        class="w-full py-2.5 rounded-lg bg-secondary hover:bg-on-secondary-container text-on-secondary font-semibold transition-all">
+                  I am the owner — Claim &amp; Remove
+                </button>
+              </form>
+            </div>
+          </div>
+        </article>
+        {% else %}
+        <div class="col-span-full py-12 text-center text-outline">
+          <span class="material-symbols-outlined text-4xl">inventory_2</span>
+          <p class="font-headline text-lg mt-2">No found items are currently listed.</p>
+        </div>
+        {% endfor %}
+      </div>
+    </section>
+
+    <!-- LOST SECTION -->
+    <section class="bg-surface-container-lowest rounded-2xl shadow-sm border border-outline-variant/20 p-4 md:p-6">
+      <div class="flex items-center justify-between mb-5">
+        <div>
+          <h3 class="font-headline text-xl md:text-2xl font-bold text-on-surface">Items People Are Looking For</h3>
+          <p class="text-sm text-on-surface-variant mt-1">Items currently reported as lost.</p>
+        </div>
+        <span class="px-3 py-1 rounded-full bg-error-container text-on-error-container text-sm font-semibold">
+          {{ lost_items|length }} Lost
+        </span>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6" id="lost-grid">
+        {% for item in lost_items %}
+        <article class="item-card lost-card bg-surface rounded-xl shadow-sm border border-outline-variant/20 overflow-hidden flex flex-col"
+                 data-category="{{ item.category }}">
+
+          <div class="relative w-full h-48 overflow-hidden bg-surface-container-high flex items-center justify-center">
+            <div class="text-center text-outline">
+              <span class="material-symbols-outlined text-4xl">search</span>
+              <p class="text-sm mt-1">Lost Item</p>
+            </div>
+
+            <div class="absolute top-3 left-3 flex gap-2">
+              <span class="px-2.5 py-1 rounded-full bg-error text-on-error text-xs font-bold shadow-md">LOST</span>
+              <span class="px-2.5 py-1 rounded-full bg-surface/90 backdrop-blur-sm text-on-surface text-xs font-semibold">
+                {{ item.category }}
+              </span>
+            </div>
+          </div>
+
+          <div class="p-5 flex flex-col flex-1">
+            <div class="flex-1">
+              <div class="flex items-center gap-1 text-sm text-on-surface-variant mb-1">
+                <span class="material-symbols-outlined text-[17px] text-primary">location_pin</span>
+                {{ item.location if item.location else 'Campus Area' }}
+              </div>
+
+              <h4 class="font-headline text-xl font-bold text-on-surface">{{ item.item_name }}</h4>
+
+              <p class="text-sm text-on-surface-variant mt-2">
+                {{ item.description }}
+              </p>
+
+              {% if item.phone_number %}
+              <p class="text-sm mt-3">
+                <strong>Contact:</strong> {{ item.phone_number }}
+              </p>
+              {% endif %}
+
+              <p class="text-xs text-outline mt-3">
+                Lost {{ item.days_passed }} day{% if item.days_passed != 1 %}s{% endif %} ago
+              </p>
+
+              {% if item.action_required %}
+              <p class="text-xs text-error font-bold mt-2">
+                ⚠️ Report is older than 30 days
+              </p>
+              {% endif %}
+            </div>
+
+            <div class="mt-5 pt-4 border-t border-outline-variant/20">
+              <div class="flex items-center justify-between text-xs text-outline mb-3">
+                <span>Posted by: {{ item.user_name }}</span>
+                <span>ID #{{ item.id }}</span>
+              </div>
+
+              <form action="{{ url_for('resolve', item_id=item.id) }}" method="POST">
+                <button type="submit" name="action" value="resolve"
+                        class="w-full py-2.5 rounded-lg bg-secondary hover:bg-on-secondary-container text-on-secondary font-semibold transition-all">
+                  I found this — Resolve &amp; Remove
+                </button>
+              </form>
+            </div>
+          </div>
+        </article>
+        {% else %}
+        <div class="col-span-full py-12 text-center text-outline">
+          <span class="material-symbols-outlined text-4xl">search_off</span>
+          <p class="font-headline text-lg mt-2">No lost items are currently listed.</p>
+        </div>
+        {% endfor %}
+      </div>
+    </section>
+
+  </div>
 </section>
 
 </div>
 </main>
 
-<!-- SECTION: Image Lightbox Modal -->
-<div id="imageLightbox" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm hidden items-center justify-center p-4" onclick="closeLightbox()">
-<div class="relative max-w-4xl max-h-[90vh] bg-surface rounded-2xl overflow-hidden p-4 flex flex-col items-center" onclick="event.stopPropagation()">
-<button onclick="closeLightbox()" class="absolute top-3 right-3 p-2 rounded-full bg-surface-container hover:bg-surface-container-high text-on-surface z-10">
-<span class="material-symbols-outlined text-[20px]">close</span>
-</button>
-<img id="lightboxImg" src="" alt="Enlarged Item View" class="max-w-full max-h-[75vh] object-contain rounded-lg mb-3"/>
-<p id="lightboxCaption" class="font-headline-sm text-on-surface"></p>
-</div>
+<!-- Image Lightbox -->
+<div id="imageLightbox"
+     class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm hidden items-center justify-center p-4"
+     onclick="closeLightbox()">
+  <div class="relative max-w-4xl max-h-[90vh] bg-surface rounded-2xl overflow-hidden p-4 flex flex-col items-center"
+       onclick="event.stopPropagation()">
+    <button onclick="closeLightbox()"
+            class="absolute top-3 right-3 p-2 rounded-full bg-surface-container hover:bg-surface-container-high text-on-surface z-10">
+      <span class="material-symbols-outlined text-[20px]">close</span>
+    </button>
+    <img id="lightboxImg" src="" alt="Enlarged Item View"
+         class="max-w-full max-h-[75vh] object-contain rounded-lg mb-3"/>
+    <p id="lightboxCaption" class="font-headline text-on-surface"></p>
+  </div>
 </div>
 
-<!-- SECTION: Footer with Custom Copyright -->
-<footer class="w-full bg-surface-container-low text-on-surface-variant py-space-lg mt-auto">
-<div class="w-full px-margin max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-space-md text-center md:text-left">
-<div class="flex items-center gap-space-sm">
-<span class="font-headline-sm text-headline-sm text-primary tracking-tight">ReFound</span>
-</div>
-<p class="font-body-md text-body-md text-on-surface-variant">Developed with ❤️ by Krishna Agrawal</p>
-</div>
+<!-- Footer -->
+<footer class="w-full bg-surface-container-low text-on-surface-variant py-6 mt-auto">
+  <div class="w-full px-4 md:px-8 max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4 text-center md:text-left">
+    <div class="flex items-center gap-2">
+      <span class="font-headline text-lg text-primary tracking-tight font-bold">ReFound</span>
+    </div>
+    <p class="text-sm text-on-surface-variant">Developed with ❤️ by Krishna Agrawal</p>
+  </div>
 </footer>
 
-<!-- SECTION: Scripts (Dynamic Form Fields, Lightbox & Periodic Auto-Refresh) -->
 <script>
-    function toggleReportFields() {
-        const reportType = document.getElementById('report_type_select').value;
-        const fieldLocation = document.getElementById('field_location');
-        const fieldPhone = document.getElementById('field_phone');
-        const fieldWhoHasIt = document.getElementById('field_who_has_it');
+function toggleReportFields() {
+  const reportType = document.getElementById('report_type_select').value;
+  const foundFields = document.getElementById('found_fields');
 
-        if (reportType === 'Lost') {
-            fieldLocation.style.display = 'none';
-            fieldPhone.style.display = 'flex';
-            fieldWhoHasIt.style.display = 'none';
-        } else {
-            fieldLocation.style.display = 'flex';
-            fieldPhone.style.display = 'none';
-            fieldWhoHasIt.style.display = 'flex';
-        }
+  if (reportType === 'Found') {
+    foundFields.classList.remove('hidden');
+    foundFields.classList.add('grid');
+  } else {
+    foundFields.classList.add('hidden');
+    foundFields.classList.remove('grid');
+  }
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  toggleReportFields();
+});
+
+function filterItems() {
+  const selected = document.getElementById('category_filter').value;
+  const cards = document.querySelectorAll('.found-card, .lost-card');
+
+  cards.forEach(card => {
+    if (selected === 'All' || card.dataset.category === selected) {
+      card.classList.remove('filter-hidden');
+    } else {
+      card.classList.add('filter-hidden');
     }
+  });
+}
 
-    // Run on load to set initial state
-    document.addEventListener('DOMContentLoaded', toggleReportFields);
+function openLightbox(url, title) {
+  if (!url) return;
+  document.getElementById('lightboxImg').src = url;
+  document.getElementById('lightboxCaption').innerText = title;
+  document.getElementById('imageLightbox').classList.remove('hidden');
+  document.getElementById('imageLightbox').classList.add('flex');
+}
 
-    function openLightbox(url, title) {
-        if (!url) return;
-        document.getElementById('lightboxImg').src = url;
-        document.getElementById('lightboxCaption').innerText = title;
-        document.getElementById('imageLightbox').classList.remove('hidden');
-        document.getElementById('imageLightbox').classList.add('flex');
-    }
+function closeLightbox() {
+  document.getElementById('imageLightbox').classList.remove('flex');
+  document.getElementById('imageLightbox').classList.add('hidden');
+}
 
-    function closeLightbox() {
-        document.getElementById('imageLightbox').classList.remove('flex');
-        document.getElementById('imageLightbox').classList.add('hidden');
-    }
+// Keep the existing auto-refresh behaviour.
+setInterval(() => {
+  const activeElement = document.activeElement;
+  const isTyping = activeElement && (
+    activeElement.tagName === 'INPUT' ||
+    activeElement.tagName === 'TEXTAREA' ||
+    activeElement.tagName === 'SELECT'
+  );
 
-    // Periodic Auto-refresh
-    setInterval(() => {
-        const activeElement = document.activeElement;
-        const isTyping = activeElement && (
-            activeElement.tagName === 'INPUT' || 
-            activeElement.tagName === 'TEXTAREA' || 
-            activeElement.tagName === 'SELECT'
-        );
-        
-        if (!isTyping) {
-            location.reload();
-        }
-    }, 30000);
+  if (!isTyping) {
+    location.reload();
+  }
+}, 30000);
 </script>
 
 </body>

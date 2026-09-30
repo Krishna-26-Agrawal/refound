@@ -140,7 +140,6 @@ body { overscroll-behavior: none; }
         </div>
 
         <form action="{{ url_for('feedback') }}" method="POST" class="mt-6 space-y-4">
-          <input type="hidden" name="csrf_token" value="{{ csrf_token }}"/>
           <div>
             <label class="block text-sm font-semibold mb-1.5">Category</label>
             <select name="category" required class="w-full p-3 rounded-lg bg-surface border border-outline-variant outline-none focus:border-primary">
