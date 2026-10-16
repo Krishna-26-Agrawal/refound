@@ -105,6 +105,13 @@ class Feedback(Base):
     )
 
 
+class ActiveUser(Base):
+    __tablename__ = "active_users"
+
+    user_email: Mapped[str] = mapped_column(Text, primary_key=True)
+    last_seen: Mapped[datetime] = mapped_column(DateTime, nullable=False, server_default=func.current_timestamp())
+
+
 def database_url():
     db_url = os.environ.get("DATABASE_URL")
 
@@ -177,6 +184,30 @@ def make_session_permanent():
 
 # Enforce login for the entire app except auth routes
 @app.before_request
+def track_active_user():
+    # Track logged-in users who have been active within the last 5 minutes.
+    if 'user' not in session:
+        return
+
+    user_email = session['user'].get('email')
+    if not user_email:
+        return
+
+    now = datetime.now()
+    with SessionLocal() as db:
+        active_user = db.scalar(
+            select(ActiveUser).where(ActiveUser.user_email == user_email)
+        )
+
+        if active_user:
+            active_user.last_seen = now
+        else:
+            db.add(ActiveUser(user_email=user_email, last_seen=now))
+
+        db.commit()
+
+
+@app.before_request
 def require_login():
     allowed_routes = ['landing', 'login', 'authorize', 'static']
     if request.endpoint not in allowed_routes and 'user' not in session:
@@ -230,6 +261,13 @@ def index():
         total_reunited = db.scalar(
             select(func.count()).select_from(Item).where(
                 Item.status == 'Resolved'
+            )
+        ) or 0
+
+        active_cutoff = datetime.now() - timedelta(minutes=5)
+        active_users = db.scalar(
+            select(func.count()).select_from(ActiveUser).where(
+                ActiveUser.last_seen >= active_cutoff
             )
         ) or 0
 
@@ -295,7 +333,8 @@ def index():
         form_data=form_data,
         total_registered=total_registered,
         total_reunited=total_reunited,
-        median_speed=median_speed
+        median_speed=median_speed,
+        active_users=active_users
     )
 
 
